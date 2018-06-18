@@ -16,31 +16,37 @@ $(document).ready(async function() {
     })
 })
 
+var modal = false;
+
 function blockWithPattern(pattern, text, input) {
-    // TODO: the blocking bit
+    if(modal){return}
 
     $("body").append("<div id='pif-block'>");
 
     // Add Blocking div, preventing mouse use.
     var block = $("#pif-block")
 
+
     block.append(`
 
     <div id='pif-box'>
         <h3>Oh No!</h3>
         <span id='pif-info'>You typed a banned phrase, remove it or enter the password.</span>
-        <span id="pif-phrase-name">Blocking Filter: ${pattern.desc}</span>
-        <input class='pif-exclude' type="password" id='pif-pass' placeholder="password" />
-        <div>
+        <span id="pif-phrase-name">Blocking Filter: ${pattern.desc}</span>` +
+        // <input class='pif-exclude' type="password" id='pif-pass' placeholder="password" />
+        `<div>
             <button id="pif-remove">Remove</button>
         </div>
     </div>
 
     `)
 
+    modal=true;
+
     $("#pif-remove").click(function() {
         input.val(text.replace(pattern.reg, "[removed]"))
         block.remove();
+        modal = false;
     })
 
     $("#pif-pass").on("input", function() {
